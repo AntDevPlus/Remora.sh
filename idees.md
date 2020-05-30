@@ -11,7 +11,7 @@
 - pouvoir chiffrer le rendu
 
 # Arguments
--a : all -> Signifie une sortie de toute les fonctionnalités listé ci dessus
+-a : add -> ajout une log à noter coffre fort
 
 -p [protocole]: procole -> sortie de tous les paquets en relation avec ce protocole
 
@@ -28,3 +28,5 @@
 -nf : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
 
 -v : vault -> creer un coffre-fort de vos logs
+
+-gpw : generate password: genere votre password à GARDER ABSOLUmENT
