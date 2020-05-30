@@ -3,17 +3,17 @@
 - traiter ces données en fonction des besoins (exemples: )
 
 | IP-Source     | IP-Destination  |        Nombre de paquet échangé |
-| :------------| :-------------: | :------------- |
-| 192.168.1.1   |     0.0.0.0     |        50      |
+| :------------ | :-------------: | :-------------  |
+| 192.168.1.1   |     0.0.0.0     |        50       |
 
 
 - extraire la liste des adresses IP les plus communes
-- pourvoir chiffrer le rendu
+- pouvoir chiffrer le rendu
 
 # Arguments
 -a : all -> Signifie une sortie de toute les fonctionnalités listé ci dessus
 
--p : procole -> sortie de tous les paquets en relation avec ce protocole
+-p [protocole]: procole -> sortie de tous les paquets en relation avec ce protocole
 
 -b : binaire -> nous des les adresses IP en binaire
 
@@ -26,3 +26,5 @@
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant
 
 -nf : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
+
+-v : vault -> creer un coffre-fort de vos logs
