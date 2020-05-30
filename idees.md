@@ -15,13 +15,13 @@
 
 -p [protocole]: procole -> sortie de tous les paquets en relation avec ce protocole
 
--b : binaire -> nous des les adresses IP en binaire
-
--l : last -> sortie des derniers echanges
-
 -rec : reccurent [chiffre] -> affiche toutes les adressses où les échanges sont les plus nombreux
 
--enc : encrypt -> creer les logs chiffrés avec votre mot de passe
+-ip [ip]: recuperer des paquets envoyés/recus à une ip sépcifique 
+
+-b : binaire -> nous des les adresses IP en binaire
+
+-tar : encrypt -> creer un tar du coffre-fort(chiffré)
 
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant
 

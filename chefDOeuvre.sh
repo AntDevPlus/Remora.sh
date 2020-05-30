@@ -24,6 +24,7 @@ LOGS_DIR="./logs/"
 VAULT="./vault/"
 LOGS_VAULT="$VAULT/logs/"
 LOGS_TEMP="./temp/"
+HOST=$(echo $(hostname -I) | tr " " ";" | cut -d";" -f2)
 #Fonctions
 
 #Genere ou non les répertoires obligatoire
@@ -78,7 +79,7 @@ displayWithProtocol(){
     decryptAllVaulted
     sleep 5
     #cat "./temp/oeuvre.csv" | head -n 10
-    protocol="DNS"
+    protocol="TCP"
     log="./temp/oeuvre.csv"
     utiles=$(cat $log | cut -d"," -f3,4,5 | grep -E $protocol | tr -d " ")
     #echo $utiles
@@ -101,10 +102,55 @@ displayWithProtocol(){
         echo "$vsource -> $vdest" >> displayWithProtocol
         ((numligne=numligne + 1))
     done
-    cat displayWithProtocol | sort | uniq -c | sort -n -r
+    cat displayWithProtocol | sort | uniq -c | sort -n -r | sed "s/$HOST/vous/g"
     rm "temp/sourcedest.csv"
+    rm displayWithProtocol
 }
 
+displayRecurentInformation(){
+    max=$1
+    log="./temp/oeuvre.csv"
+    decryptAllVaulted
+    cat /dev/null > displayRecurentInformation
+    numligne=1
+    while [ $numligne -le $( cat $log | wc -l ) ]
+    do
+        ligne=$(cat $log | head -n $numligne | tail -1 )
+        vsource=$( echo $ligne | cut -d"," -f3)
+        vdest=$( echo $ligne | cut -d"," -f4)
+        echo "$vsource -> $vdest" >> displayRecurentInformation
+        ((numligne=numligne + 1))
+    done
+    cat displayRecurentInformation | sort | uniq -c | sort -n -r | head -n $max | tr -d "\"" | sed "s/$HOST/vous/g"
+    rm displayRecurentInformation
+}
+
+displayWithIPInformation(){
+    ips=$@
+    for ip in $ips
+    do
+        log="./temp/oeuvre.csv"
+        decryptAllVaulted  
+        numligne=1
+        cat /dev/null > displayWithIPInformation
+        while [ $numligne -le $( cat $log | wc -l ) ]
+        do
+            ligne=$(cat $log | head -n $numligne | tail -1 )
+            vsource=$( echo $ligne | cut -d"," -f3)
+            vdest=$( echo $ligne | cut -d"," -f4)
+            vprot=$( echo $ligne |cut -d',' -f5)
+            vinfo=$( echo $ligne | cut -d"," -f7)
+            echo "$vsource -> $vdest, protocole: $vprot, infos: $vinfo" | tr -d '"' >> displayWithIPInformation
+            ((numligne=numligne + 1))
+        done
+        cat displayWithIPInformation | grep -E $ip | sed "s/$HOST/vous/g"
+
+    done
+}
+
+tarVault(){
+    tar cvzf vault.tar.gz $VAULT > /dev/null
+}
 
 #Aide utilisateur
 
@@ -115,8 +161,10 @@ displayWithProtocol(){
 checkDir
 #decryptAllVaulted
 #generatePassword
-#addLogs "logs_wireshark.csv"
-displayWithProtocol
-
+ #addLogs "logs_wireshark_complet.csv"
+#displayWithProtocol
+#displayRecurentInformation 3
+#displayWithIPInformation 192.168.1.24
+tarVault
 #Sortie avec un code de retour
 exit 0
