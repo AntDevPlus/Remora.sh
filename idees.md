@@ -25,4 +25,4 @@
 
 -ns : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
 
--gpw : generate password: genere votre password à GARDER ABSOLUmENT
+-gpwd : generate password: genere votre password à GARDER ABSOLUmENT

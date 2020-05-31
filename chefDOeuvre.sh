@@ -131,12 +131,12 @@ displayRecurentInformation(){
 
 displayWithIPInformation(){
     ips=$@
+    cat /dev/null > displayWithIPInformation
     for ip in $ips
     do
         log="./temp/oeuvre.csv"
         decryptAllVaulted  
         numligne=1
-        cat /dev/null > displayWithIPInformation
         while [ $numligne -le $( cat $log | wc -l ) ]
         do
             ligne=$(cat $log | head -n $numligne | tail -1 )
@@ -179,6 +179,7 @@ displayNotSafeProtocolInformation(){
         rm displayNotSafeProtocolInformation
     else
     echo "Aucune des requetes était extraite d'un protocole non sécurisé"
+    rm displayNotSafeProtocolInformation
     fi
 }
 
@@ -191,13 +192,13 @@ tarVault(){
 #Blindage des entrées
 #Blindage du premier argument
 case $1 in
-  "-gpw" | "-tar" | "-ns") 
+  "-gpwd" | "-tar" | "-ns") 
     if [ $# -gt 1 ]
     then
         echo "Ce parametre ne nécessite aucun autre argument !"
         exit 1
     fi;;
-  "-a" | "-p" |"-rec") 
+  "-a" | "-p" |"-rec" | "-ip") 
   if [ $# -lt 2 ]
   then
         echo "Ce parametre nécessite des arguments suplémentaires !"
@@ -242,13 +243,27 @@ esac
 #Programme
 
 checkDir
-#decryptAllVaulted
-#generatePassword
-#addLogs "logs_wireshark_complet.csv"
-#displayWithProtocol TLS
-#displayRecurentInformation 5
-#displayNotSafeProtocolInformation
-#displayWithIPInformation 192.168.1.24
-#tarVault
+case $1 in
+    "-a") addLogs $2;;
+    "-p") displayWithProtocol $2;;
+    "-rec") displayRecurentInformation $2;;
+    "-ip") 
+        for ip in $@
+        do
+            if [ ! $ip = $1 ]
+            then 
+                displayWithIPInformation $2
+            fi
+        done;;
+    "-tar") tarVault;;
+    "-ns") displayNotSafeProtocolInformation;;
+    "-gpwd") 
+    echo -e '\E[47;31m'"ATTENTION, SI VOTRE FORT CONTIENT DEJA DES LOGS ELLE SERONT INUTILISABLE, sinon CTRL+D (10sec)"
+    tput sgr0
+    sleep 10
+    generatePassword;;
+    *) echo "Vous avez réussi à percer le blindage ?"
+esac
+
 #Sortie avec un code de retour
 exit 0
