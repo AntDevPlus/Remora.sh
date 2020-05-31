@@ -25,8 +25,6 @@
 
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant
 
--nf : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
-
--v : vault -> creer un coffre-fort de vos logs
+-ns : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
 
 -gpw : generate password: genere votre password à GARDER ABSOLUmENT

@@ -25,6 +25,7 @@ VAULT="./vault/"
 LOGS_VAULT="$VAULT/logs/"
 LOGS_TEMP="./temp/"
 HOST=$(echo $(hostname -I) | tr " " ";" | cut -d";" -f2)
+VOID_HASH=$(cat /dev/null | md5sum |tr -d "-")
 #Fonctions
 
 #Genere ou non les répertoires obligatoire
@@ -58,6 +59,7 @@ addLogs(){
             openssl enc -aes-256-cbc -salt -in $log -out "./vault/logs/$log-$date.logs" -k $(cat vault/generation.pwd) 2>/dev/null
         fi
     done
+    echo "les logs ont bien été ajoutées au coffre-fort"
 }
 
 decryptAllVaulted(){
@@ -79,7 +81,7 @@ displayWithProtocol(){
     decryptAllVaulted
     sleep 5
     #cat "./temp/oeuvre.csv" | head -n 10
-    protocol="TCP"
+    protocol=$1
     log="./temp/oeuvre.csv"
     utiles=$(cat $log | cut -d"," -f3,4,5 | grep -E $protocol | tr -d " ")
     #echo $utiles
@@ -102,6 +104,7 @@ displayWithProtocol(){
         echo "$vsource -> $vdest" >> displayWithProtocol
         ((numligne=numligne + 1))
     done
+    echo "Nombre de requetes identiques | IPsource -> IPdestination"
     cat displayWithProtocol | sort | uniq -c | sort -n -r | sed "s/$HOST/vous/g"
     rm "temp/sourcedest.csv"
     rm displayWithProtocol
@@ -121,8 +124,9 @@ displayRecurentInformation(){
         echo "$vsource -> $vdest" >> displayRecurentInformation
         ((numligne=numligne + 1))
     done
-    cat displayRecurentInformation | sort | uniq -c | sort -n -r | head -n $max | tr -d "\"" | sed "s/$HOST/vous/g"
-    rm displayRecurentInformation
+    echo "nb échange | IPsource -> IPdest"
+        cat displayRecurentInformation | sort | uniq -c | sort -n -r | head -n $max | tr -d "\"" | sed "s/$HOST/vous/g"
+        rm displayRecurentInformation
 }
 
 displayWithIPInformation(){
@@ -144,8 +148,38 @@ displayWithIPInformation(){
             ((numligne=numligne + 1))
         done
         cat displayWithIPInformation | grep -E $ip | sed "s/$HOST/vous/g"
+        rm displayWithIPInformation
 
     done
+}
+
+displayNotSafeProtocolInformation(){
+    for ns in "POP" "FTP" "HTML" "telnet"
+    do
+        log="./temp/oeuvre.csv"
+        decryptAllVaulted
+        cat /dev/null > displayNotSafeProtocolInformation
+        numligne=1
+        while [ $numligne -le $( cat $log | wc -l ) ]
+        do
+            ligne=$(cat $log | grep -e "$ns" | head -n $numligne | tail -1 )
+            if [ ! $ligne = "" ]
+            then
+                vsource=$( echo $ligne | cut -d"," -f3)
+                vdest=$( echo $ligne | cut -d"," -f4)
+                vprot=$( echo $ligne | cut -d"," -f5)
+                echo "[$vprot] :$vsource -> $vdest" >> displayNotSafeProtocolInformation    
+            fi
+            ((numligne=numligne + 1))
+        done
+    done
+    if [ ! $(cat displayNotSafeProtocolInformation | md5sum | tr -d "-") = $VOID_HASH ]
+    then
+        cat displayNotSafeProtocolInformation | sort | uniq -c | sort -n -r | head -n 1 | tr -d "\"" | sed "s/$HOST/vous/g"
+        rm displayNotSafeProtocolInformation
+    else
+    echo "Aucune des requetes était extraite d'un protocole non sécurisé"
+    fi
 }
 
 tarVault(){
@@ -161,10 +195,11 @@ tarVault(){
 checkDir
 #decryptAllVaulted
 #generatePassword
- #addLogs "logs_wireshark_complet.csv"
-#displayWithProtocol
-#displayRecurentInformation 3
+#addLogs "logs_wireshark_complet.csv"
+#displayWithProtocol TCP
+#displayRecurentInformation 5
+displayNotSafeProtocolInformation
 #displayWithIPInformation 192.168.1.24
-tarVault
+#tarVault
 #Sortie avec un code de retour
 exit 0
