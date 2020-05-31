@@ -19,8 +19,6 @@
 
 -ip [ip]: recuperer des paquets envoyés/recus à une ip sépcifique 
 
--b : binaire -> nous des les adresses IP en binaire
-
 -tar : encrypt -> creer un tar du coffre-fort(chiffré)
 
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant

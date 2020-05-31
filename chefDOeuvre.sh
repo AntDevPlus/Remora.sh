@@ -189,6 +189,55 @@ tarVault(){
 #Aide utilisateur
 
 #Blindage des entrées
+#Blindage du premier argument
+case $1 in
+  "-gpw" | "-tar" | "-ns") 
+    if [ $# -gt 1 ]
+    then
+        echo "Ce parametre ne nécessite aucun autre argument !"
+        exit 1
+    fi;;
+  "-a" | "-p" |"-rec") 
+  if [ $# -lt 2 ]
+  then
+        echo "Ce parametre nécessite des arguments suplémentaires !"
+        exit 1
+  fi;;
+  *) echo "Veuillez inserer un parametre valide !"; exit 1
+esac
+#Blindage du deuxieme caractère
+case $1 in
+  "-a") 
+    if [ ! $# -eq 2 ]
+    then
+        echo "Veuillez renseigner seulement un fichier logs avec cet arguments"
+        exit 1
+    elif [ ! -f $2 ]
+    then
+        echo "Seul un fichier log de wireshark est désiré"
+    fi;;
+  "-p")
+    if [ ! $# -eq 2 ]
+    then
+        echo "La fonction protocole nécéssite un seul protcole en argument ex: (TCP)"        
+        exit 1
+    fi
+    if [ $(echo $2 | grep -E [a-Z] | wc -l) -eq 0 ]
+    then
+        echo "$2 ne doit pas etre un chiffre"
+        exit 1
+    fi;;
+  "-rec")
+    if [ ! $# -eq 2 ]
+    then
+        echo "La fonction récurent nécéssite seulemement un chiffre en argument"
+        exit 1  
+    elif [ $(echo $2 | grep -E [a-Z] | wc -l) -gt 0 ]
+    then
+        echo "$2 n'est pas un nombre"
+        exit 1
+    fi;;
+esac
 
 #Programme
 
@@ -196,9 +245,9 @@ checkDir
 #decryptAllVaulted
 #generatePassword
 #addLogs "logs_wireshark_complet.csv"
-#displayWithProtocol TCP
+#displayWithProtocol TLS
 #displayRecurentInformation 5
-displayNotSafeProtocolInformation
+#displayNotSafeProtocolInformation
 #displayWithIPInformation 192.168.1.24
 #tarVault
 #Sortie avec un code de retour
