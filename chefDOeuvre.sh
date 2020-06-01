@@ -30,7 +30,7 @@ VOID_HASH=$(cat /dev/null | md5sum |tr -d "-")
 
 #Genere ou non les répertoires obligatoire
 checkDir(){
-    if [ -e $LOGS_TEMP ]; then rm $LOGS_TEMP*; fi
+    #if [ -e $LOGS_TEMP ]; then rm $LOGS_TEMP*; fi
     if [ ! -e $LOGS_DIR ]; then mkdir $LOGS_DIR; fi
     if [ ! -e $LOGS_VAULT ]; then mkdir $LOGS_VAULT; fi
     if [ ! -e $VAULT ]; then mkdir $VAULT; fi
@@ -209,6 +209,17 @@ tarVault(){
     tar cvzf vault.tar.gz $VAULT > /dev/null
 }
 
+scpVault(){
+    tarVault
+    args=$1
+    #echo $args
+    user=$(echo $args | cut -d":" -f1)
+    ip=$(echo $args | cut -d":" -f2)
+    dir=$(echo $args | cut -d":" -f3)
+
+    scp "./vault.tar.gz" $user@$ip://$dir
+}
+
 #Aide utilisateur
 
 #Blindage des entrées
@@ -222,7 +233,7 @@ case $1 in
         exit 1
     fi;;
     #je liste ici les arguments qui nécéssite plus que 0 arguments
-  "-a" | "-p" |"-rec" | "-ip") 
+  "-a" | "-p" |"-rec" | "-ip" | "-scp") 
   if [ $# -lt 2 ]
   then
         echo "Ce parametre nécessite des arguments suplémentaires !"
@@ -266,6 +277,16 @@ case $1 in
         echo "$2 n'est pas un nombre"
         exit 1
     fi;;
+    "-scp")
+        if [ ! $# -eq 2 ]
+        then
+            echo "Les nombre d'argument nécéssaire n'est pas respecté (1 max/min)"
+            exit 1
+        elif [ $(echo $2 | grep -E ":" | wc -l) -gt 2 ]
+        then
+            echo "$2 n'est pas valide"
+            exit 1
+        fi;;
 esac
 
 #Programme
@@ -287,6 +308,7 @@ case $1 in
         done;;
     "-tar") tarVault;;
     "-ns") displayNotSafeProtocolInformation;;
+    "-scp") scpVault $2;;
     "-gpwd") 
     #MESSAGE de prévention
     echo -e '\E[47;31m'"ATTENTION, SI VOTRE FORT CONTIENT DEJA DES LOGS ELLE SERONT INUTILISABLE, sinon CTRL+D (10sec)"

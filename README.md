@@ -25,4 +25,16 @@
 
 -ns : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
 
--gpwd : generate password: genere votre password à GARDER ABSOLUmENT
+-gpwd : generate password: genere votre password à GARDER ABSOLUMENT
+
+# Utilisation recommandée
+Nous vous conseillons d'utiliser SharkVault sur un micro-ordinateur portatif, par exemple un raspberry pi plus un disque dur SSD de 120Go.
+
+Ainsi devenu portatif il sera très facile à utilisé pour vous les techniciens.
+
+#### Partitionnement recommandé sur le raspberry
+
+Avant toutes choses, si votre raspberry est composé d'un stockage principale (comme une carte SD) vous pouvez réalisé un RAID1 avec le stockage additionnel (SSD conseillé).
+
+##### plan de partionnement recommandé: 
+
