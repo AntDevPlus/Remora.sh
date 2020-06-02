@@ -6,7 +6,7 @@
 #   Rôle: Ce script est une boite à outil pour la lecture de paquets wireshark
 #   Usage: ./extendedLogs.sh <args>, (cf idees.md)
 #   Limites connues: Auncune au moment de l'écriture de cette cartouche
-#   Dépendances, prérequis: wireshark, grep, cut, openSSL
+#   Dépendances, prérequis: wireshark, grep, tar, cut, openSSL,md5sum
 #   Historique: 
 #       Date:
 #       Numéro de version:
@@ -173,7 +173,7 @@ displayWithIPInformation(){
 #fonction affichant les échanges de paquets via des protcoles non sécurisé
 displayNotSafeProtocolInformation(){
     #Je liste ici les protocole non sécurisé
-    for ns in "POP" "FTP" "HTML" "telnet"
+    for ns in "HTTP" "FTP" "DNS" "NTP" "POP" "ARP" "ICMP" "TELNET" "RIP"
     do
         log="./temp/oeuvre.csv"
         decryptAllVaulted
@@ -181,7 +181,9 @@ displayNotSafeProtocolInformation(){
         numligne=1
         while [ $numligne -le $( cat $log | wc -l ) ]
         do
+            #echo $ns
             ligne=$(cat $log | grep -e "$ns" | head -n $numligne | tail -1 )
+            #echo $lignes
             if [ ! $ligne = "" ]
             then
                 #Meme opération qu'avant, je découpe les champs qui m'interesse
@@ -216,7 +218,6 @@ scpVault(){
     user=$(echo $args | cut -d":" -f1)
     ip=$(echo $args | cut -d":" -f2)
     dir=$(echo $args | cut -d":" -f3)
-
     scp "./vault.tar.gz" $user@$ip://$dir
 }
 
