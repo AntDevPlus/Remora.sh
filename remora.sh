@@ -120,11 +120,16 @@ displayWithProtocol(){
         echo "$vsource -> $vdest" >> displayWithProtocol
         ((numligne=numligne + 1))
     done
-    echo "Nombre de requetes identiques | IPsource -> IPdestination"
     #supression des fichiers temporaires et affichage du résultat
+    if [ ! $( cat displayWithProtocol | md5sum |tr -d '-') = 'b829a48d1c47442f9196b9f7410ec214' ]
+    then
+    echo "Nombre de requetes identiques | IPsource -> IPdestination"
     cat displayWithProtocol | sort | uniq -c | sort -n -r | sed "s/$HOST/vous/g"
     rm "temp/sourcedest.csv"
     rm displayWithProtocol
+    else
+        echo "Aucun protocole de ce type dans ces logs"
+    fi
 }
 #Fonction pour nous montrez les échanges les plus fréquents
 displayRecurentInformation(){
@@ -178,37 +183,9 @@ displayNotSafeProtocolInformation(){
     #Je liste ici les protocole non sécurisé
     for ns in "HTTP" "FTP" "DNS" "NTP" "POP" "ARP" "ICMP" "TELNET" "RIP"
     do
-        #log="./temp/oeuvre.csv"
-        #decryptAllVaulted
-        #cat /dev/null > displayNotSafeProtocolInformation
-        #numligne=1
-        #while [ $numligne -le $( cat $log | wc -l ) ]
-        #do
-        #    #echo $ns
-        #    ligne=$(cat $log | grep -e "$ns" | head -n $numligne | tail -1 )
-            #echo $lignes
-        #    if [ ! $ligne = "" ]
-        #    then
-                #Meme opération qu'avant, je découpe les champs qui m'interesse
-        #        vsource=$( echo $ligne | cut -d"," -f3)
-        #        vdest=$( echo $ligne | cut -d"," -f4)
-         #       vprot=$( echo $ligne | cut -d"," -f5)
-                #compilage dans un fichier de résultat
-        #       echo "[$vprot] :$vsource -> $vdest" >> displayNotSafeProtocolInformation    
-        #    fi
-        #    ((numligne=numligne + 1))
-        #done
-    #done
-    #ICI à l'aide de l'empreinte cryptographique je compare si le fichier de résultat est vide
-    #if [ ! $(cat displayNotSafeProtocolInformation | md5sum | tr -d "-") = $VOID_HASH ]
-    #then
-     #   cat displayNotSafeProtocolInformation | sort | uniq -c | sort -n -r | head -n 1 | tr -d "\"" | sed "s/$HOST/vous/g"
-      #  rm displayNotSafeProtocolInformation
-    #else
-    #echo "Aucune des requetes était extraite d'un protocole non sécurisé"
-    #rm displayNotSafeProtocolInformation
-    #fi
+    echo "Résultat pour ce protocole: $ns" 
     displayWithProtocol $ns
+    done
 }
 #Fonction pour archiver et compresser la crypte (coffre-fort)
 tarVault(){
