@@ -38,7 +38,7 @@ checkDir(){
     chmod -R u+rw $LOGS_DIR
     chmod -R u+rw $VAULT
     chmod -R u+rw $LOGS_VAULT
-    chmod -r u+rw $LOGS_TEMP
+    chmod -R u+rw $LOGS_TEMP
 }
 #Génération d'un mot de passe
 generatePassword(){
