@@ -19,21 +19,21 @@ Ce script à pour but de stocker, chiffrer, analyser, combiner des logs de wires
 - pouvoir chiffrer le rendu
 
 # Arguments
+-gpwd : generate password: genere votre password à GARDER ABSOLUMENT
+
 -a : add -> ajout une log à notre coffre fort
+
+-ip [ip]: recuperer des paquets envoyés/recus à une ip sépcifique 
+
+-ns : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
 
 -p [protocole]: procole -> sortie de tous les paquets en relation avec ce protocole
 
 -rec : reccurent [chiffre] -> affiche toutes les adressses où les échanges sont les plus nombreux
 
--ip [ip]: recuperer des paquets envoyés/recus à une ip sépcifique 
-
 -tar : encrypt -> creer un tar du coffre-fort(chiffré)
 
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant
-
--ns : notsafe -> sorti de tout les paquets non sécurisé (sans chiffrement)
-
--gpwd : generate password: genere votre password à GARDER ABSOLUMENT
 
 # Utilisation recommandée
 Nous vous conseillons d'utiliser SharkVault sur un micro-ordinateur portatif, par exemple un raspberry pi plus un disque dur SSD de 120Go.
