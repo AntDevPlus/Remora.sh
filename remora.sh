@@ -24,7 +24,7 @@ LOGS_DIR="./logs/"
 VAULT="./vault/"
 LOGS_VAULT="$VAULT/logs/"
 LOGS_TEMP="./temp/"
-HOST=$(echo $(hostname -I) | tr " " ";" | cut -d";" -f2)
+HOST=$(echo $(hostname -I) | tr " " ";" | cut -d";" -f4)
 VOID_HASH=$(cat /dev/null | md5sum |tr -d "-")
 #Fonctions
 
