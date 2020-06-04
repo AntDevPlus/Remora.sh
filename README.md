@@ -1,5 +1,5 @@
 # ./Remora.sh
-### Pour quoi remora ?
+### Pourquoi remora ?
 Remora est un poisson en symbiose avec le requin, tout comme ce script est en symbiose avec wireshark
 
 ### A quoi sert-il ?
