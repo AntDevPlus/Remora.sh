@@ -1,3 +1,11 @@
+# ./Remora.sh
+### Pour quoi remora ?
+Remora est un poisson en symbiose avec le requin, tout comme ce script est en symbiose avec wireshark
+
+### A quoi sert-il ?
+
+Ce script à pour but de stocker, chiffrer, analyser, combiner des logs de wireshark.
+
 # idées pour le projet
 - exporter les paquets de wireshark en .csv
 - traiter ces données en fonction des besoins (exemples: )
@@ -36,5 +44,15 @@ Ainsi devenu portatif il sera très facile à utilisé pour vous les techniciens
 
 Avant toutes choses, si votre raspberry est composé d'un stockage principale (comme une carte SD) vous pouvez réalisé un RAID1 avec le stockage additionnel (SSD conseillé).
 
-##### plan de partionnement recommandé: 
+#### plan de partionnement recommandé (120Go): 
 
+![halt-text](https://i.ibb.co/93hYz7R/bien-se-passer.png)
+
+## Benchmark
+
+tests réalisés avec:
+
+CPU: IntelCore i5 - 8300H
+RAM: DDR4 8go
+
+![halt-text](https://i.ibb.co/gPYXpXq/Sans-titre.png)
