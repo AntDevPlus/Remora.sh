@@ -36,7 +36,7 @@ Ce script à pour but de stocker, chiffrer, analyser, combiner des logs de wires
 -scp:user:ip:repertoire -> envoie des logs sur un serveur distant
 
 # Utilisation recommandée
-Nous vous conseillons d'utiliser SharkVault sur un micro-ordinateur portatif, par exemple un raspberry pi plus un disque dur SSD de 120Go.
+Nous vous conseillons d'utiliser remora sur un micro-ordinateur portatif, par exemple un raspberry pi plus un disque dur SSD de 120Go.
 
 Ainsi devenu portatif il sera très facile à utilisé pour vous les techniciens.
 
