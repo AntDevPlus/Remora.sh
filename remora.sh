@@ -1,7 +1,7 @@
 #!/bin/bash
 ##############################################################################
 #   Name: extendedLogs.sh
-#   Auteur: 81AETU
+#   Auteur:AntDevPlus
 #   Version: 1.0
 #   Rôle: Ce script est une boite à outil pour la lecture de paquets wireshark
 #   Usage: ./extendedLogs.sh <args>, (cf idees.md)
